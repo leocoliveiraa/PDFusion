@@ -1,4 +1,4 @@
-# 📄 PDFSum - Resumidor de PDF com IA
+# 📄 PDFusion - Resumidor de PDF com IA
 
 Aplicação web que extrai e resume PDFs automaticamente usando IA (Groq API).
 
