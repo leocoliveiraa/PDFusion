@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PDFusion - Resumo Inteligente de PDFs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,453 +24,156 @@
     />
 
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-        background: #0a0a0a;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        color: #fff;
-      }
-
-      .container {
-        background: #fff;
-        padding: 60px;
-        max-width: 700px;
-        width: 100%;
-        border: 1px solid #e5e5e5;
-      }
-
-      .header {
-        margin-bottom: 48px;
-      }
-
-      .logo {
-        font-size: 24px;
-        font-weight: 600;
-        color: #000;
-        margin-bottom: 8px;
-        letter-spacing: -0.5px;
-      }
-
-      .subtitle {
-        color: #737373;
-        font-size: 15px;
-        line-height: 1.5;
-        font-weight: 400;
-      }
-
-      .upload-area {
-        border: 1px solid #e5e5e5;
-        padding: 48px 24px;
-        text-align: center;
-        transition: border-color 0.2s;
-        cursor: pointer;
-        background: #fafafa;
-        margin-bottom: 24px;
-      }
-
-      .upload-area:hover {
-        border-color: #000;
-      }
-
-      .upload-area.dragover {
-        border-color: #000;
-        background: #f5f5f5;
-      }
-
-      .upload-text {
-        font-size: 15px;
-        color: #000;
-        margin-bottom: 6px;
-        font-weight: 500;
-      }
-
-      .upload-hint {
-        font-size: 13px;
-        color: #737373;
-      }
-
-      input[type="file"] {
-        display: none;
-      }
-
-      .file-info {
-        display: none;
-        background: #fafafa;
-        padding: 16px 20px;
-        margin-bottom: 24px;
-        align-items: center;
-        gap: 12px;
-        border: 1px solid #e5e5e5;
-      }
-
-      .file-info.show {
-        display: flex;
-      }
-
-      .file-details {
-        flex: 1;
-      }
-
-      .file-name {
-        font-weight: 500;
-        color: #000;
-        margin-bottom: 4px;
-        font-size: 14px;
-      }
-
-      .file-size {
-        font-size: 13px;
-        color: #737373;
-      }
-
-      .remove-file {
-        background: none;
-        border: none;
-        color: #737373;
-        cursor: pointer;
-        padding: 4px;
-        width: auto;
-        transition: color 0.2s;
-        display: flex;
-        align-items: center;
-      }
-
-      .remove-file:hover {
-        color: #000;
-      }
-
-      .remove-file svg {
-        display: block;
-      }
-
-      button {
-        width: 100%;
-        padding: 14px;
-        background: #000;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: background 0.2s;
-        letter-spacing: -0.2px;
-      }
-
-      button:hover:not(:disabled) {
-        background: #1a1a1a;
-      }
-
-      button:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
-
-      .loading {
-        display: none;
-        text-align: center;
-        margin-top: 32px;
-      }
-
-      .loading.show {
-        display: block;
-      }
-
-      .spinner {
-        border: 2px solid #e5e5e5;
-        border-top: 2px solid #000;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        animation: spin 0.8s linear infinite;
-        margin: 0 auto 12px;
-      }
-
       @keyframes spin {
         to {
           transform: rotate(360deg);
         }
       }
-
-      .loading-text {
-        color: #737373;
-        font-size: 13px;
-      }
-
-      .result {
-        display: none;
-        margin-top: 40px;
-        padding-top: 40px;
-        border-top: 1px solid #e5e5e5;
-      }
-
-      .result.show {
-        display: block;
-      }
-
-      .result-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .result-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #000;
-        letter-spacing: -0.3px;
-      }
-
-      .copy-btn {
-        background: #fafafa;
-        color: #000;
-        padding: 8px 16px;
-        font-size: 13px;
-        width: auto;
-        border: 1px solid #e5e5e5;
-      }
-
-      .copy-btn:hover {
-        background: #f5f5f5;
-      }
-
-      .result-content {
-        background: #fafafa;
-        padding: 24px;
-        border: 1px solid #e5e5e5;
-        white-space: pre-wrap;
-        line-height: 1.7;
-        color: #171717;
-        font-size: 14px;
-      }
-
-      .error {
-        background: #fef2f2;
-        border-color: #fecaca;
-        color: #991b1b;
-      }
-
-      @media (max-width: 640px) {
-        .container {
-          padding: 40px 24px;
-        }
-
-        .logo {
-          font-size: 20px;
-        }
+      .animate-spin {
+        animation: spin 0.8s linear infinite;
       }
     </style>
   </head>
 
-  <body>
-    <div class="container">
-      <div class="header">
-        <div class="logo">PDFusion</div>
-        <p class="subtitle">
-          Resumos inteligentes de PDFs com IA
+  <body class="bg-white min-h-screen">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center px-10 z-50">
+      <div class="text-lg font-semibold tracking-tight">PDFusion</div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="grid lg:grid-cols-2 min-h-screen pt-16">
+      <!-- Left Panel -->
+      <div class="bg-gray-50 px-10 lg:px-16 py-20 lg:py-32 flex flex-col justify-center border-r border-gray-200">
+        <h1 class="text-5xl lg:text-6xl font-semibold tracking-tight mb-6 leading-tight">
+          Resumos inteligentes de PDFs
+        </h1>
+        <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+          Transforme documentos extensos em resumos concisos com IA. Extraia insights e economize tempo.
         </p>
-      </div>
 
-      <div class="upload-area" id="uploadArea" onclick="document.getElementById('pdfFile').click()">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 12px; display: block; color: #737373;">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-        </svg>
-        <div class="upload-text">Selecionar arquivo</div>
-        <div class="upload-hint">PDF até 10MB</div>
-      </div>
+        <!-- Features -->
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-base mb-1 tracking-tight">Análise rápida</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Processamento em segundos com IA avançada</p>
+            </div>
+          </div>
 
-      <input
-        type="file"
-        id="pdfFile"
-        accept="application/pdf"
-        onchange="handleFileSelect(event)"
-      />
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-base mb-1 tracking-tight">Insights precisos</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Extração de tópicos e pontos principais</p>
+            </div>
+          </div>
 
-      <div class="file-info" id="fileInfo">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex-shrink: 0; color: #737373;">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-        </svg>
-        <div class="file-details">
-          <div class="file-name" id="fileName"></div>
-          <div class="file-size" id="fileSize"></div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-base mb-1 tracking-tight">Seguro e privado</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Seus documentos são processados com segurança</p>
+            </div>
+          </div>
         </div>
-        <button class="remove-file" onclick="removeFile()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
       </div>
 
-      <button id="uploadBtn" onclick="uploadPDF()" disabled>
-        Gerar resumo
-      </button>
+      <!-- Right Panel -->
+      <div class="bg-white px-10 lg:px-16 py-20 lg:py-32 flex flex-col justify-center">
+        <div class="max-w-lg">
+          <h2 class="text-2xl font-semibold tracking-tight mb-8">Enviar documento</h2>
 
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div class="loading-text">Processando...</div>
-      </div>
-
-      <div class="result" id="result">
-        <div class="result-header">
-          <div class="result-title">Resumo</div>
-          <button class="copy-btn" onclick="copyToClipboard()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          <!-- Upload Area -->
+          <div 
+            id="uploadArea" 
+            onclick="document.getElementById('pdfFile').click()"
+            class="border-2 border-dashed border-gray-200 py-16 px-6 text-center cursor-pointer bg-gray-50 hover:border-black hover:bg-gray-100 transition-all mb-6"
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-3 text-gray-500">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
             </svg>
-            Copiar
+            <div class="text-base font-medium text-black mb-1">Selecionar arquivo</div>
+            <div class="text-sm text-gray-600">PDF até 10MB</div>
+          </div>
+
+          <input
+            type="file"
+            id="pdfFile"
+            accept="application/pdf"
+            onchange="handleFileSelect(event)"
+            class="hidden"
+          />
+
+          <!-- File Info -->
+          <div id="fileInfo" class="hidden bg-gray-50 px-5 py-4 mb-6 items-center gap-3 border border-gray-200">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="flex-shrink-0 text-gray-500">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            <div class="flex-1">
+              <div id="fileName" class="font-medium text-sm text-black mb-1"></div>
+              <div id="fileSize" class="text-sm text-gray-600"></div>
+            </div>
+            <button onclick="removeFile()" class="p-1 text-gray-500 hover:text-black transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Upload Button -->
+          <button 
+            id="uploadBtn" 
+            onclick="uploadPDF()" 
+            disabled
+            class="w-full py-4 bg-black text-white text-sm font-medium tracking-tight hover:bg-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Gerar resumo
           </button>
+
+          <!-- Loading -->
+          <div id="loading" class="hidden text-center mt-8">
+            <div class="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin mx-auto mb-3"></div>
+            <div class="text-sm text-gray-600">Processando...</div>
+          </div>
+
+          <!-- Result -->
+          <div id="result" class="hidden mt-10 pt-10 border-t border-gray-200">
+            <div class="flex justify-between items-center mb-5">
+              <div class="text-base font-semibold tracking-tight">Resumo</div>
+              <button 
+                onclick="copyToClipboard()" 
+                class="px-4 py-2 bg-gray-50 text-black text-sm font-medium border border-gray-200 hover:bg-gray-100 transition-colors flex items-center gap-2"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                Copiar
+              </button>
+            </div>
+            <div id="resultContent" class="bg-gray-50 px-6 py-6 border border-gray-200 whitespace-pre-wrap leading-relaxed text-sm text-gray-900"></div>
+          </div>
         </div>
-        <div class="result-content" id="resultContent"></div>
       </div>
     </div>
 
-    <script>
-      let selectedFile = null;
-
-      // Drag and drop
-      const uploadArea = document.getElementById("uploadArea");
-
-      uploadArea.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        uploadArea.classList.add("dragover");
-      });
-
-      uploadArea.addEventListener("dragleave", () => {
-        uploadArea.classList.remove("dragover");
-      });
-
-      uploadArea.addEventListener("drop", (e) => {
-        e.preventDefault();
-        uploadArea.classList.remove("dragover");
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-          document.getElementById("pdfFile").files = files;
-          handleFileSelect({ target: { files } });
-        }
-      });
-
-      function handleFileSelect(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        if (file.type !== "application/pdf") {
-          alert("Por favor, selecione um arquivo PDF válido.");
-          return;
-        }
-
-        if (file.size > 10 * 1024 * 1024) {
-          alert("Arquivo muito grande. O limite é 10MB.");
-          return;
-        }
-
-        selectedFile = file;
-        document.getElementById("fileName").textContent = file.name;
-        document.getElementById("fileSize").textContent = formatFileSize(
-          file.size
-        );
-        document.getElementById("fileInfo").classList.add("show");
-        document.getElementById("uploadBtn").disabled = false;
-        document.getElementById("result").classList.remove("show");
-      }
-
-      function removeFile() {
-        selectedFile = null;
-        document.getElementById("pdfFile").value = "";
-        document.getElementById("fileInfo").classList.remove("show");
-        document.getElementById("uploadBtn").disabled = true;
-      }
-
-      function formatFileSize(bytes) {
-        if (bytes < 1024) return bytes + " B";
-        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-      }
-
-      async function uploadPDF() {
-        if (!selectedFile) {
-          alert("Selecione um arquivo PDF!");
-          return;
-        }
-
-        const uploadBtn = document.getElementById("uploadBtn");
-        const loading = document.getElementById("loading");
-        const result = document.getElementById("result");
-        const resultContent = document.getElementById("resultContent");
-
-        uploadBtn.disabled = true;
-        loading.classList.add("show");
-        result.classList.remove("show");
-
-        try {
-          const arrayBuffer = await selectedFile.arrayBuffer();
-          const uint8 = new Uint8Array(arrayBuffer);
-          let binary = "";
-          const chunkSize = 0x8000;
-          for (let i = 0; i < uint8.length; i += chunkSize) {
-            binary += String.fromCharCode.apply(
-              null,
-              Array.prototype.slice.call(uint8, i, i + chunkSize)
-            );
-          }
-          const base64 = btoa(binary);
-
-          const res = await fetch("/api/upload", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              filename: selectedFile.name,
-              data: base64,
-            }),
-          });
-
-          const data = await res.json();
-
-          loading.classList.remove("show");
-          result.classList.add("show");
-
-          if (res.ok && data.summary) {
-            resultContent.textContent = data.summary;
-            resultContent.classList.remove("error");
-          } else {
-            resultContent.textContent =
-              "Erro: " + (data.error || JSON.stringify(data));
-            resultContent.classList.add("error");
-          }
-        } catch (err) {
-          loading.classList.remove("show");
-          result.classList.add("show");
-          resultContent.textContent =
-            "Erro ao processar: " + (err.message || err);
-          resultContent.classList.add("error");
-        } finally {
-          uploadBtn.disabled = false;
-        }
-      }
-
-      function copyToClipboard() {
-        const content = document.getElementById("resultContent").textContent;
-        navigator.clipboard.writeText(content).then(() => {
-          const btn = document.querySelector(".copy-btn");
-          const originalHTML = btn.innerHTML;
-          btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 6px;"><polyline points="20 6 9 17 4 12"/></svg>Copiado';
-          setTimeout(() => {
-            btn.innerHTML = originalHTML;
-          }, 2000);
-        });
-      }
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
