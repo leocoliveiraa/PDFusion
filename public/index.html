@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resumo de PDF</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 500px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background: #45a049;
+      }
+
+      .result {
+        margin-top: 25px;
+        white-space: pre-wrap;
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Resumo de PDF</h2>
+
+      <input type="file" id="pdfFile" accept="application/pdf" />
+      <button onclick="uploadPDF()">Enviar PDF</button>
+
+      <div id="result" class="result" style="display: none"></div>
+    </div>
+
+    <script>
+      async function uploadPDF() {
+        const fileInput = document.getElementById("pdfFile");
+        const resultDiv = document.getElementById("result");
+
+        if (!fileInput.files.length) {
+          alert("Selecione um arquivo PDF!");
+          return;
+        }
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file); // <-- CORRETO
+
+        resultDiv.style.display = "block";
+        resultDiv.innerText = "Processando PDF...";
+
+        try {
+          const res = await fetch("http://localhost:3000/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await res.json();
+
+          if (data.summary) {
+            resultDiv.innerText = data.summary;
+          } else {
+            resultDiv.innerText = "Erro: " + JSON.stringify(data);
+          }
+        } catch (err) {
+          resultDiv.innerText = "Erro ao enviar: " + err.message;
+        }
+      }
+    </script>
+  </body>
+</html>

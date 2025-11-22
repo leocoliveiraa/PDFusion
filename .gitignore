@@ -1,0 +1,45 @@
+# Variáveis de ambiente (API KEYS)
+.env
+.env.local
+.env.*.local
+
+# Dependências
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build/Compilação
+dist/
+build/
+*.js
+*.js.map
+*.d.ts
+!public/**/*.js
+
+# Arquivos temporários
+*.tmp
+*.temp
+temp-*.pdf
+*.log
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Sistema operacional
+Thumbs.db
+desktop.ini
+
+# Testes
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
