@@ -10,9 +10,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const buffer = Buffer.from(data, "base64");
 
-    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
     if (buffer.length > MAX_SIZE)
-      return res.status(413).json({ error: "Arquivo muito grande. Limite: 5MB" });
+      return res.status(413).json({ error: "Arquivo muito grande. Limite: 10MB" });
 
     const PDFParser = require("pdf2json");
     const pdfParser = new PDFParser();

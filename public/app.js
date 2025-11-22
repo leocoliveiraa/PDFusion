@@ -10,6 +10,28 @@ const uploadBtn = document.getElementById("uploadBtn");
 const loading = document.getElementById("loading");
 const result = document.getElementById("result");
 const resultContent = document.getElementById("resultContent");
+const themeToggle = document.getElementById("themeToggle");
+
+// Dark mode
+function initTheme() {
+  const savedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  
+  if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+    document.documentElement.classList.add("dark");
+  }
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}
+
+// Initialize theme on load
+initTheme();
+
+// Theme toggle button
+themeToggle.addEventListener("click", toggleTheme);
 
 // Upload area click
 uploadArea.addEventListener("click", () => {
@@ -52,8 +74,8 @@ function handleFileSelect(event) {
     return;
   }
 
-  // Limite de 5MB para evitar erro 413
-  const MAX_SIZE = 5 * 1024 * 1024;
+  // Limite de 10MB
+  const MAX_SIZE = 10 * 1024 * 1024;
   if (file.size > MAX_SIZE) {
     alert(`Arquivo muito grande. O limite é ${formatFileSize(MAX_SIZE)}.\n\nSeu arquivo: ${formatFileSize(file.size)}`);
     pdfFileInput.value = "";
@@ -128,7 +150,7 @@ async function uploadPDF() {
       // Mensagens de erro mais amigáveis
       let errorMsg = data.error || "Erro desconhecido";
       if (res.status === 413) {
-        errorMsg = "Arquivo muito grande. Por favor, use um PDF menor que 5MB.";
+        errorMsg = "Arquivo muito grande. Por favor, use um PDF menor que 10MB.";
       }
       resultContent.textContent = errorMsg;
       resultContent.classList.remove("bg-white", "border-gray-200", "text-gray-900");
