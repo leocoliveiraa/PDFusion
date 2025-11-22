@@ -14,9 +14,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (buffer.length > MAX_SIZE)
       return res.status(413).json({ error: "File too large" });
 
-    const pdfParse = require("pdf-parse");
-    const pdfData = await pdfParse(buffer);
-    const text = pdfData.text;
+    const PDFParser = require("pdf2json");
+    const pdfParser = new PDFParser();
+
+    const text = await new Promise<string>((resolve, reject) => {
+      pdfParser.on("pdfParser_dataError", (errData: any) =>
+        reject(new Error(errData.parserError))
+      );
+      pdfParser.on("pdfParser_dataReady", (pdfData: any) => {
+        const textContent = pdfParser.getRawTextContent();
+        resolve(textContent);
+      });
+      pdfParser.parseBuffer(buffer);
+    });
 
     if (!text.trim())
       return res.status(400).json({ error: "PDF contains no text" });
