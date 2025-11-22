@@ -48,11 +48,15 @@ function handleFileSelect(event) {
 
   if (file.type !== "application/pdf") {
     alert("Por favor, selecione um arquivo PDF válido.");
+    pdfFileInput.value = "";
     return;
   }
 
-  if (file.size > 10 * 1024 * 1024) {
-    alert("Arquivo muito grande. O limite é 10MB.");
+  // Limite de 5MB para evitar erro 413
+  const MAX_SIZE = 5 * 1024 * 1024;
+  if (file.size > MAX_SIZE) {
+    alert(`Arquivo muito grande. O limite é ${formatFileSize(MAX_SIZE)}.\n\nSeu arquivo: ${formatFileSize(file.size)}`);
+    pdfFileInput.value = "";
     return;
   }
 
@@ -121,7 +125,12 @@ async function uploadPDF() {
       resultContent.classList.remove("bg-red-50", "border-red-200", "text-red-900");
       resultContent.classList.add("bg-white", "border-gray-200", "text-gray-900");
     } else {
-      resultContent.textContent = "Erro: " + (data.error || JSON.stringify(data));
+      // Mensagens de erro mais amigáveis
+      let errorMsg = data.error || "Erro desconhecido";
+      if (res.status === 413) {
+        errorMsg = "Arquivo muito grande. Por favor, use um PDF menor que 5MB.";
+      }
+      resultContent.textContent = errorMsg;
       resultContent.classList.remove("bg-white", "border-gray-200", "text-gray-900");
       resultContent.classList.add("bg-red-50", "border-red-200", "text-red-900");
     }
