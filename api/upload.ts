@@ -22,7 +22,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         reject(new Error(errData.parserError))
       );
       pdfParser.on("pdfParser_dataReady", (pdfData: any) => {
-        const textContent = pdfParser.getRawTextContent();
+        let textContent = "";
+        if (pdfData && pdfData.Pages) {
+          pdfData.Pages.forEach((page: any) => {
+            if (page.Texts) {
+              page.Texts.forEach((text: any) => {
+                if (text.R) {
+                  text.R.forEach((r: any) => {
+                    if (r.T) {
+                      textContent += decodeURIComponent(r.T) + " ";
+                    }
+                  });
+                }
+              });
+              textContent += "\n";
+            }
+          });
+        }
         resolve(textContent);
       });
       pdfParser.parseBuffer(buffer);
