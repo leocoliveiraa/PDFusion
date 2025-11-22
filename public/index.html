@@ -80,27 +80,43 @@
         }
 
         const file = fileInput.files[0];
-        const formData = new FormData();
-        formData.append("file", file); // <-- CORRETO
+        if (file.size > 10 * 1024 * 1024) {
+          alert("Arquivo muito grande. Limite: 10MB.");
+          return;
+        }
 
         resultDiv.style.display = "block";
         resultDiv.innerText = "Processando PDF...";
 
         try {
-          const res = await fetch("http://localhost:3000/upload", {
+          const arrayBuffer = await file.arrayBuffer();
+          const uint8 = new Uint8Array(arrayBuffer);
+          let binary = "";
+          const chunkSize = 0x8000;
+          for (let i = 0; i < uint8.length; i += chunkSize) {
+            binary += String.fromCharCode.apply(
+              null,
+              Array.prototype.slice.call(uint8, i, i + chunkSize)
+            );
+          }
+          const base64 = btoa(binary);
+
+          const res = await fetch("/api/upload", {
             method: "POST",
-            body: formData,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ filename: file.name, data: base64 }),
           });
 
           const data = await res.json();
 
-          if (data.summary) {
+          if (res.ok && data.summary) {
             resultDiv.innerText = data.summary;
           } else {
-            resultDiv.innerText = "Erro: " + JSON.stringify(data);
+            resultDiv.innerText =
+              "Erro: " + (data.error || JSON.stringify(data));
           }
         } catch (err) {
-          resultDiv.innerText = "Erro ao enviar: " + err.message;
+          resultDiv.innerText = "Erro ao enviar: " + (err.message || err);
         }
       }
     </script>

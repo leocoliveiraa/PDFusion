@@ -1,3 +1,31 @@
+**Overview**: small app to extract text from a PDF and summarize it via the Groq API. This repo contains a static frontend in `public/` and a Vercel Serverless Function at `api/upload.ts`.
+
+**Quick deploy (Vercel)**
+
+- Create a Vercel project and point it to this repository.
+- In Vercel dashboard add an Environment Variable `GROQ_API_KEY` (your Groq API key).
+- The default build will run `vercel-build` (configured to run `tsc`) and deploy static files from `public/` and serverless functions from `api/`.
+
+**Local development**
+
+- Install deps: `npm install`
+- Run the express dev server (serves `public/` and `/upload` as in `src/server.ts`):
+
+```
+npm run dev
+```
+
+- Open http://localhost:3000
+
+**Notes & Production considerations**
+
+- Client sends base64 JSON payload to `/api/upload` to simplify serverless parsing.
+- Max file size enforced client & server: 10 MB. Adjust as needed for your plan.
+- Serverless functions have time and memory limits on Vercel — large PDFs may fail. For heavy usage consider using a dedicated server or queueing processing jobs.
+- Keep `GROQ_API_KEY` secret and do not hardcode.
+
+If you'd like, I can: add automatic tests, add queueing (Redis/RabbitMQ), or migrate the serverless function to a smaller memory footprint. Which should I do next?
+
 # 📄 PDFSum - Resumidor de PDF com IA
 
 Aplicação web que extrai e resume PDFs automaticamente usando IA (Groq API).
