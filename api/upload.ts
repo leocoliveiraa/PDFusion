@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import pdfParse from "pdf-parse";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -15,6 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (buffer.length > MAX_SIZE)
       return res.status(413).json({ error: "File too large" });
 
+    const pdfParse = require("pdf-parse");
     const pdfData = await pdfParse(buffer);
     const text = pdfData.text;
 
