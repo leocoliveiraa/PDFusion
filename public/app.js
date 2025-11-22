@@ -1,26 +1,46 @@
 let selectedFile = null;
 
-// Drag and drop
+// DOM elements
 const uploadArea = document.getElementById("uploadArea");
+const pdfFileInput = document.getElementById("pdfFile");
+const fileInfo = document.getElementById("fileInfo");
+const fileName = document.getElementById("fileName");
+const fileSize = document.getElementById("fileSize");
+const uploadBtn = document.getElementById("uploadBtn");
+const loading = document.getElementById("loading");
+const result = document.getElementById("result");
+const resultContent = document.getElementById("resultContent");
 
+// Upload area click
+uploadArea.addEventListener("click", () => {
+  pdfFileInput.click();
+});
+
+// File input change
+pdfFileInput.addEventListener("change", handleFileSelect);
+
+// Drag and drop
 uploadArea.addEventListener("dragover", (e) => {
   e.preventDefault();
-  uploadArea.classList.add("dragover");
+  uploadArea.classList.add("border-gray-900", "bg-white");
 });
 
 uploadArea.addEventListener("dragleave", () => {
-  uploadArea.classList.remove("dragover");
+  uploadArea.classList.remove("border-gray-900", "bg-white");
 });
 
 uploadArea.addEventListener("drop", (e) => {
   e.preventDefault();
-  uploadArea.classList.remove("dragover");
+  uploadArea.classList.remove("border-gray-900", "bg-white");
   const files = e.dataTransfer.files;
   if (files.length > 0) {
-    document.getElementById("pdfFile").files = files;
+    pdfFileInput.files = files;
     handleFileSelect({ target: { files } });
   }
 });
+
+// Upload button click
+uploadBtn.addEventListener("click", uploadPDF);
 
 function handleFileSelect(event) {
   const file = event.target.files[0];
@@ -37,20 +57,20 @@ function handleFileSelect(event) {
   }
 
   selectedFile = file;
-  document.getElementById("fileName").textContent = file.name;
-  document.getElementById("fileSize").textContent = formatFileSize(file.size);
-  document.getElementById("fileInfo").classList.remove("hidden");
-  document.getElementById("fileInfo").classList.add("flex");
-  document.getElementById("uploadBtn").disabled = false;
-  document.getElementById("result").classList.add("hidden");
+  fileName.textContent = file.name;
+  fileSize.textContent = formatFileSize(file.size);
+  fileInfo.classList.remove("hidden");
+  fileInfo.classList.add("flex");
+  uploadBtn.disabled = false;
+  result.classList.add("hidden");
 }
 
 function removeFile() {
   selectedFile = null;
-  document.getElementById("pdfFile").value = "";
-  document.getElementById("fileInfo").classList.add("hidden");
-  document.getElementById("fileInfo").classList.remove("flex");
-  document.getElementById("uploadBtn").disabled = true;
+  pdfFileInput.value = "";
+  fileInfo.classList.add("hidden");
+  fileInfo.classList.remove("flex");
+  uploadBtn.disabled = true;
 }
 
 function formatFileSize(bytes) {
@@ -64,11 +84,6 @@ async function uploadPDF() {
     alert("Selecione um arquivo PDF!");
     return;
   }
-
-  const uploadBtn = document.getElementById("uploadBtn");
-  const loading = document.getElementById("loading");
-  const result = document.getElementById("result");
-  const resultContent = document.getElementById("resultContent");
 
   uploadBtn.disabled = true;
   loading.classList.remove("hidden");
@@ -103,39 +118,18 @@ async function uploadPDF() {
 
     if (res.ok && data.summary) {
       resultContent.textContent = data.summary;
-      resultContent.classList.remove(
-        "bg-red-50",
-        "border-red-200",
-        "text-red-900"
-      );
-      resultContent.classList.add(
-        "bg-gray-50",
-        "border-gray-200",
-        "text-gray-900"
-      );
+      resultContent.classList.remove("bg-red-50", "border-red-200", "text-red-900");
+      resultContent.classList.add("bg-white", "border-gray-200", "text-gray-900");
     } else {
-      resultContent.textContent =
-        "Erro: " + (data.error || JSON.stringify(data));
-      resultContent.classList.remove(
-        "bg-gray-50",
-        "border-gray-200",
-        "text-gray-900"
-      );
-      resultContent.classList.add(
-        "bg-red-50",
-        "border-red-200",
-        "text-red-900"
-      );
+      resultContent.textContent = "Erro: " + (data.error || JSON.stringify(data));
+      resultContent.classList.remove("bg-white", "border-gray-200", "text-gray-900");
+      resultContent.classList.add("bg-red-50", "border-red-200", "text-red-900");
     }
   } catch (err) {
     loading.classList.add("hidden");
     result.classList.remove("hidden");
     resultContent.textContent = "Erro ao processar: " + (err.message || err);
-    resultContent.classList.remove(
-      "bg-gray-50",
-      "border-gray-200",
-      "text-gray-900"
-    );
+    resultContent.classList.remove("bg-white", "border-gray-200", "text-gray-900");
     resultContent.classList.add("bg-red-50", "border-red-200", "text-red-900");
   } finally {
     uploadBtn.disabled = false;
@@ -143,14 +137,16 @@ async function uploadPDF() {
 }
 
 function copyToClipboard() {
-  const content = document.getElementById("resultContent").textContent;
+  const content = resultContent.textContent;
+  const btn = document.getElementById("copyBtn");
+  
   navigator.clipboard.writeText(content).then(() => {
-    const btn = document.querySelector(".copy-btn");
     const originalHTML = btn.innerHTML;
-    btn.innerHTML =
-      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Copiado';
+    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sm:w-3.5 sm:h-3.5"><polyline points="20 6 9 17 4 12"/></svg><span>Copiado!</span>';
     setTimeout(() => {
       btn.innerHTML = originalHTML;
     }, 2000);
+  }).catch(() => {
+    alert("Erro ao copiar. Tente novamente.");
   });
 }

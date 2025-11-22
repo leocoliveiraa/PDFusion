@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
@@ -35,144 +35,158 @@
     </style>
   </head>
 
-  <body class="bg-white min-h-screen">
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center px-10 z-50">
-      <div class="text-lg font-semibold tracking-tight">PDFusion</div>
-    </nav>
+  <body class="bg-white antialiased">
+    <!-- Header -->
+    <header class="border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="text-lg font-semibold tracking-tight">PDFusion</div>
+        <a href="https://github.com" target="_blank" class="text-sm text-gray-600 hover:text-black transition-colors hidden sm:block">
+          GitHub
+        </a>
+      </div>
+    </header>
 
-    <!-- Main Content -->
-    <div class="grid lg:grid-cols-2 min-h-screen pt-16">
-      <!-- Left Panel -->
-      <div class="bg-gray-50 px-10 lg:px-16 py-20 lg:py-32 flex flex-col justify-center border-r border-gray-200">
-        <h1 class="text-5xl lg:text-6xl font-semibold tracking-tight mb-6 leading-tight">
-          Resumos inteligentes de PDFs
-        </h1>
-        <p class="text-lg text-gray-600 mb-12 leading-relaxed">
-          Transforme documentos extensos em resumos concisos com IA. Extraia insights e economize tempo.
-        </p>
+    <!-- Main -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        
+        <!-- Left: Info -->
+        <div class="lg:sticky lg:top-24">
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-4 sm:mb-6">
+            Resumos inteligentes de PDFs
+          </h1>
+          <p class="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12 leading-relaxed">
+            Transforme documentos extensos em resumos concisos. Extraia insights e economize tempo com IA.
+          </p>
 
-        <!-- Features -->
-        <div class="space-y-6">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
+          <!-- Features -->
+          <div class="space-y-4 sm:space-y-6">
+            <div class="flex items-start gap-3 sm:gap-4">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-50 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sm:w-5 sm:h-5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-medium text-sm sm:text-base mb-0.5 sm:mb-1">Análise rápida</h3>
+                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">Processamento em segundos</p>
+              </div>
             </div>
-            <div>
-              <h3 class="font-semibold text-base mb-1 tracking-tight">Análise rápida</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">Processamento em segundos com IA avançada</p>
-            </div>
-          </div>
 
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-              </svg>
+            <div class="flex items-start gap-3 sm:gap-4">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-50 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sm:w-5 sm:h-5">
+                  <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-medium text-sm sm:text-base mb-0.5 sm:mb-1">Insights precisos</h3>
+                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">Extração de tópicos principais</p>
+              </div>
             </div>
-            <div>
-              <h3 class="font-semibold text-base mb-1 tracking-tight">Insights precisos</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">Extração de tópicos e pontos principais</p>
-            </div>
-          </div>
 
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-base mb-1 tracking-tight">Seguro e privado</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">Seus documentos são processados com segurança</p>
+            <div class="flex items-start gap-3 sm:gap-4">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-50 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sm:w-5 sm:h-5">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-medium text-sm sm:text-base mb-0.5 sm:mb-1">Seguro e privado</h3>
+                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">Processamento seguro</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Right Panel -->
-      <div class="bg-white px-10 lg:px-16 py-20 lg:py-32 flex flex-col justify-center">
-        <div class="max-w-lg">
-          <h2 class="text-2xl font-semibold tracking-tight mb-8">Enviar documento</h2>
-
-          <!-- Upload Area -->
-          <div 
-            id="uploadArea" 
-            onclick="document.getElementById('pdfFile').click()"
-            class="border-2 border-dashed border-gray-200 py-16 px-6 text-center cursor-pointer bg-gray-50 hover:border-black hover:bg-gray-100 transition-all mb-6"
-          >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-3 text-gray-500">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-            </svg>
-            <div class="text-base font-medium text-black mb-1">Selecionar arquivo</div>
-            <div class="text-sm text-gray-600">PDF até 10MB</div>
-          </div>
-
-          <input
-            type="file"
-            id="pdfFile"
-            accept="application/pdf"
-            onchange="handleFileSelect(event)"
-            class="hidden"
-          />
-
-          <!-- File Info -->
-          <div id="fileInfo" class="hidden bg-gray-50 px-5 py-4 mb-6 items-center gap-3 border border-gray-200">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="flex-shrink-0 text-gray-500">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-            </svg>
-            <div class="flex-1">
-              <div id="fileName" class="font-medium text-sm text-black mb-1"></div>
-              <div id="fileSize" class="text-sm text-gray-600"></div>
-            </div>
-            <button onclick="removeFile()" class="p-1 text-gray-500 hover:text-black transition-colors">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
+        <!-- Right: Upload -->
+        <div class="w-full">
+          <div class="bg-gray-50 border border-gray-200 p-6 sm:p-8 lg:p-10">
+            
+            <!-- Upload Area -->
+            <div 
+              id="uploadArea" 
+              class="border-2 border-dashed border-gray-300 py-12 sm:py-16 px-4 sm:px-6 text-center cursor-pointer hover:border-gray-900 hover:bg-white transition-all mb-6"
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-3 text-gray-400 sm:w-8 sm:h-8">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
               </svg>
-            </button>
-          </div>
+              <div class="text-sm sm:text-base font-medium text-black mb-1">Clique para selecionar</div>
+              <div class="text-xs sm:text-sm text-gray-500">ou arraste seu PDF aqui (máx. 10MB)</div>
+            </div>
 
-          <!-- Upload Button -->
-          <button 
-            id="uploadBtn" 
-            onclick="uploadPDF()" 
-            disabled
-            class="w-full py-4 bg-black text-white text-sm font-medium tracking-tight hover:bg-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Gerar resumo
-          </button>
+            <input
+              type="file"
+              id="pdfFile"
+              accept="application/pdf"
+              class="hidden"
+            />
 
-          <!-- Loading -->
-          <div id="loading" class="hidden text-center mt-8">
-            <div class="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin mx-auto mb-3"></div>
-            <div class="text-sm text-gray-600">Processando...</div>
-          </div>
-
-          <!-- Result -->
-          <div id="result" class="hidden mt-10 pt-10 border-t border-gray-200">
-            <div class="flex justify-between items-center mb-5">
-              <div class="text-base font-semibold tracking-tight">Resumo</div>
-              <button 
-                onclick="copyToClipboard()" 
-                class="px-4 py-2 bg-gray-50 text-black text-sm font-medium border border-gray-200 hover:bg-gray-100 transition-colors flex items-center gap-2"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            <!-- File Info -->
+            <div id="fileInfo" class="hidden bg-white px-4 py-3 sm:px-5 sm:py-4 mb-6 items-center gap-3 border border-gray-200">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="flex-shrink-0 text-gray-400 sm:w-5 sm:h-5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              <div class="flex-1 min-w-0">
+                <div id="fileName" class="font-medium text-xs sm:text-sm text-black mb-0.5 truncate"></div>
+                <div id="fileSize" class="text-xs text-gray-500"></div>
+              </div>
+              <button onclick="removeFile()" class="p-1 text-gray-400 hover:text-black transition-colors flex-shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
-                Copiar
               </button>
             </div>
-            <div id="resultContent" class="bg-gray-50 px-6 py-6 border border-gray-200 whitespace-pre-wrap leading-relaxed text-sm text-gray-900"></div>
+
+            <!-- Upload Button -->
+            <button 
+              id="uploadBtn" 
+              disabled
+              class="w-full py-3 sm:py-4 bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Gerar resumo
+            </button>
+
+            <!-- Loading -->
+            <div id="loading" class="hidden text-center mt-8">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin mx-auto mb-3"></div>
+              <div class="text-xs sm:text-sm text-gray-500">Processando seu documento...</div>
+            </div>
+
+            <!-- Result -->
+            <div id="result" class="hidden mt-8 sm:mt-10">
+              <div class="flex justify-between items-center mb-4 sm:mb-5">
+                <div class="text-sm sm:text-base font-semibold">Resumo</div>
+                <button 
+                  id="copyBtn"
+                  class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white text-black text-xs sm:text-sm font-medium border border-gray-200 hover:bg-gray-50 transition-colors flex items-center gap-1.5 sm:gap-2"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sm:w-3.5 sm:h-3.5">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  <span>Copiar</span>
+                </button>
+              </div>
+              <div id="resultContent" class="bg-white px-4 py-4 sm:px-6 sm:py-6 border border-gray-200 whitespace-pre-wrap leading-relaxed text-xs sm:text-sm text-gray-900"></div>
+            </div>
           </div>
         </div>
+
       </div>
-    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 mt-12 sm:mt-16 lg:mt-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <p class="text-xs sm:text-sm text-gray-500 text-center">
+          PDFusion © 2024 • Powered by Groq AI
+        </p>
+      </div>
+    </footer>
 
     <script src="app.js"></script>
   </body>
