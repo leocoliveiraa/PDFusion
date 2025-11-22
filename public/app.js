@@ -74,8 +74,8 @@ function handleFileSelect(event) {
     return;
   }
 
-  // Limite de 10MB
-  const MAX_SIZE = 10 * 1024 * 1024;
+  // Limite de 50MB (processamento no cliente permite arquivos maiores)
+  const MAX_SIZE = 50 * 1024 * 1024;
   if (file.size > MAX_SIZE) {
     alert(`Arquivo muito grande. O limite é ${formatFileSize(MAX_SIZE)}.\n\nSeu arquivo: ${formatFileSize(file.size)}`);
     pdfFileInput.value = "";
@@ -105,6 +105,21 @@ function formatFileSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 }
 
+async function extractTextFromPDF(file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let fullText = "";
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    const pageText = textContent.items.map((item) => item.str).join(" ");
+    fullText += pageText + "\n\n";
+  }
+
+  return fullText;
+}
+
 async function uploadPDF() {
   if (!selectedFile) {
     alert("Selecione um arquivo PDF!");
@@ -116,24 +131,19 @@ async function uploadPDF() {
   result.classList.add("hidden");
 
   try {
-    const arrayBuffer = await selectedFile.arrayBuffer();
-    const uint8 = new Uint8Array(arrayBuffer);
-    let binary = "";
-    const chunkSize = 0x8000;
-    for (let i = 0; i < uint8.length; i += chunkSize) {
-      binary += String.fromCharCode.apply(
-        null,
-        Array.prototype.slice.call(uint8, i, i + chunkSize)
-      );
+    // Extrair texto no cliente
+    const text = await extractTextFromPDF(selectedFile);
+
+    if (!text.trim()) {
+      throw new Error("Não foi possível extrair texto do PDF. O arquivo pode ser uma imagem ou estar protegido.");
     }
-    const base64 = btoa(binary);
 
     const res = await fetch("/api/upload", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         filename: selectedFile.name,
-        data: base64,
+        text: text, // Envia o texto extraído em vez do binário
       }),
     });
 
@@ -150,7 +160,7 @@ async function uploadPDF() {
       // Mensagens de erro mais amigáveis
       let errorMsg = data.error || "Erro desconhecido";
       if (res.status === 413) {
-        errorMsg = "Arquivo muito grande. Por favor, use um PDF menor que 10MB.";
+        errorMsg = "O texto extraído é muito grande para ser processado.";
       }
       resultContent.textContent = errorMsg;
       resultContent.classList.remove("bg-white", "border-gray-200", "text-gray-900");

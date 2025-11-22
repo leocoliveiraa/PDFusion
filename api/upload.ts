@@ -5,47 +5,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== "POST")
       return res.status(405).json({ error: "Method not allowed" });
 
-    const { data } = req.body || {};
-    if (!data) return res.status(400).json({ error: "No file data provided" });
-
-    const buffer = Buffer.from(data, "base64");
-
-    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-    if (buffer.length > MAX_SIZE)
-      return res.status(413).json({ error: "Arquivo muito grande. Limite: 10MB" });
-
-    const PDFParser = require("pdf2json");
-    const pdfParser = new PDFParser();
-
-    const text = await new Promise<string>((resolve, reject) => {
-      pdfParser.on("pdfParser_dataError", (errData: any) =>
-        reject(new Error(errData.parserError))
-      );
-      pdfParser.on("pdfParser_dataReady", (pdfData: any) => {
-        let textContent = "";
-        if (pdfData && pdfData.Pages) {
-          pdfData.Pages.forEach((page: any) => {
-            if (page.Texts) {
-              page.Texts.forEach((text: any) => {
-                if (text.R) {
-                  text.R.forEach((r: any) => {
-                    if (r.T) {
-                      textContent += decodeURIComponent(r.T) + " ";
-                    }
-                  });
-                }
-              });
-              textContent += "\n";
-            }
-          });
-        }
-        resolve(textContent);
-      });
-      pdfParser.parseBuffer(buffer);
-    });
+    const { text } = req.body || {};
+    if (!text) return res.status(400).json({ error: "No text provided" });
 
     if (!text.trim())
-      return res.status(400).json({ error: "PDF contains no text" });
+      return res.status(400).json({ error: "Text is empty" });
 
     const groqKey = process.env.GROQ_API_KEY;
     if (!groqKey)
