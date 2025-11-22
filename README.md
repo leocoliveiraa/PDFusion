@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 **Overview**: small app to extract text from a PDF and summarize it via the Groq API. This repo contains a static frontend in `public/` and a Vercel Serverless Function at `api/upload.ts`.
 
 **Quick deploy (Vercel)**
@@ -27,6 +28,9 @@ npm run dev
 If you'd like, I can: add automatic tests, add queueing (Redis/RabbitMQ), or migrate the serverless function to a smaller memory footprint. Which should I do next?
 
 # 📄 PDFSum - Resumidor de PDF com IA
+=======
+# 📄 PDFusion - Resumidor de PDF com IA
+>>>>>>> a4b6316538eafd62b1280126148bf392690a9c80
 
 Aplicação web que extrai e resume PDFs automaticamente usando IA (Groq API).
 
