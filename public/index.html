@@ -19,96 +19,72 @@
       }
 
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #0a0a0a;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 20px;
-        color: #333;
+        color: #fff;
       }
 
       .container {
-        background: white;
-        padding: 48px;
-        border-radius: 24px;
-        max-width: 680px;
+        background: #fff;
+        padding: 60px;
+        max-width: 700px;
         width: 100%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        animation: slideUp 0.5s ease-out;
-      }
-
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        border: 1px solid #e5e5e5;
       }
 
       .header {
-        text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 48px;
       }
 
       .logo {
-        font-size: 42px;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 12px;
+        font-size: 24px;
+        font-weight: 600;
+        color: #000;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
       }
 
       .subtitle {
-        color: #6b7280;
-        font-size: 16px;
-        line-height: 1.6;
+        color: #737373;
+        font-size: 15px;
+        line-height: 1.5;
+        font-weight: 400;
       }
 
       .upload-area {
-        border: 2px dashed #d1d5db;
-        border-radius: 16px;
-        padding: 40px;
+        border: 1px solid #e5e5e5;
+        padding: 48px 24px;
         text-align: center;
-        transition: all 0.3s ease;
+        transition: border-color 0.2s;
         cursor: pointer;
-        background: #f9fafb;
+        background: #fafafa;
         margin-bottom: 24px;
       }
 
       .upload-area:hover {
-        border-color: #667eea;
-        background: #f3f4ff;
+        border-color: #000;
       }
 
       .upload-area.dragover {
-        border-color: #667eea;
-        background: #eef2ff;
-        transform: scale(1.02);
-      }
-
-      .upload-icon {
-        font-size: 48px;
-        margin-bottom: 16px;
+        border-color: #000;
+        background: #f5f5f5;
       }
 
       .upload-text {
-        font-size: 16px;
-        color: #374151;
-        margin-bottom: 8px;
+        font-size: 15px;
+        color: #000;
+        margin-bottom: 6px;
         font-weight: 500;
       }
 
       .upload-hint {
-        font-size: 14px;
-        color: #9ca3af;
+        font-size: 13px;
+        color: #737373;
       }
 
       input[type="file"] {
@@ -117,20 +93,16 @@
 
       .file-info {
         display: none;
-        background: #f3f4ff;
-        padding: 16px;
-        border-radius: 12px;
+        background: #fafafa;
+        padding: 16px 20px;
         margin-bottom: 24px;
         align-items: center;
         gap: 12px;
+        border: 1px solid #e5e5e5;
       }
 
       .file-info.show {
         display: flex;
-      }
-
-      .file-icon {
-        font-size: 32px;
       }
 
       .file-details {
@@ -138,54 +110,63 @@
       }
 
       .file-name {
-        font-weight: 600;
-        color: #1f2937;
+        font-weight: 500;
+        color: #000;
         margin-bottom: 4px;
+        font-size: 14px;
       }
 
       .file-size {
-        font-size: 14px;
-        color: #6b7280;
+        font-size: 13px;
+        color: #737373;
       }
 
       .remove-file {
         background: none;
         border: none;
-        color: #ef4444;
+        color: #737373;
         cursor: pointer;
-        font-size: 24px;
-        padding: 8px;
+        padding: 4px;
         width: auto;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+      }
+
+      .remove-file:hover {
+        color: #000;
+      }
+
+      .remove-file svg {
+        display: block;
       }
 
       button {
         width: 100%;
-        padding: 16px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        padding: 14px;
+        background: #000;
+        color: #fff;
         border: none;
-        border-radius: 12px;
         cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.2s;
+        letter-spacing: -0.2px;
       }
 
       button:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        background: #1a1a1a;
       }
 
       button:disabled {
-        opacity: 0.6;
+        opacity: 0.4;
         cursor: not-allowed;
       }
 
       .loading {
         display: none;
         text-align: center;
-        margin-top: 24px;
+        margin-top: 32px;
       }
 
       .loading.show {
@@ -193,122 +174,87 @@
       }
 
       .spinner {
-        border: 3px solid #f3f4f6;
-        border-top: 3px solid #667eea;
+        border: 2px solid #e5e5e5;
+        border-top: 2px solid #000;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 16px;
+        width: 32px;
+        height: 32px;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 12px;
       }
 
       @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
+        to {
           transform: rotate(360deg);
         }
       }
 
       .loading-text {
-        color: #6b7280;
-        font-size: 14px;
+        color: #737373;
+        font-size: 13px;
       }
 
       .result {
         display: none;
-        margin-top: 32px;
-        animation: fadeIn 0.5s ease-out;
+        margin-top: 40px;
+        padding-top: 40px;
+        border-top: 1px solid #e5e5e5;
       }
 
       .result.show {
         display: block;
       }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
       .result-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
       }
 
       .result-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: #1f2937;
+        font-size: 16px;
+        font-weight: 600;
+        color: #000;
+        letter-spacing: -0.3px;
       }
 
       .copy-btn {
-        background: #f3f4f6;
-        color: #374151;
+        background: #fafafa;
+        color: #000;
         padding: 8px 16px;
-        font-size: 14px;
+        font-size: 13px;
         width: auto;
-        box-shadow: none;
+        border: 1px solid #e5e5e5;
       }
 
       .copy-btn:hover {
-        background: #e5e7eb;
+        background: #f5f5f5;
       }
 
       .result-content {
-        background: #f9fafb;
+        background: #fafafa;
         padding: 24px;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #e5e5e5;
         white-space: pre-wrap;
-        line-height: 1.8;
-        color: #374151;
-        font-size: 15px;
+        line-height: 1.7;
+        color: #171717;
+        font-size: 14px;
       }
 
       .error {
         background: #fef2f2;
-        border: 1px solid #fecaca;
+        border-color: #fecaca;
         color: #991b1b;
-      }
-
-      .features {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-top: 32px;
-        padding-top: 32px;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .feature {
-        text-align: center;
-      }
-
-      .feature-icon {
-        font-size: 24px;
-        margin-bottom: 8px;
-      }
-
-      .feature-text {
-        font-size: 13px;
-        color: #6b7280;
       }
 
       @media (max-width: 640px) {
         .container {
-          padding: 32px 24px;
+          padding: 40px 24px;
         }
 
-        .features {
-          grid-template-columns: 1fr;
-          gap: 12px;
+        .logo {
+          font-size: 20px;
         }
       }
     </style>
@@ -317,17 +263,18 @@
   <body>
     <div class="container">
       <div class="header">
-        <div class="logo">📄 PDFusion</div>
+        <div class="logo">PDFusion</div>
         <p class="subtitle">
-          Transforme seus PDFs em resumos inteligentes com IA. Extraia insights,
-          tópicos principais e economize tempo na leitura de documentos.
+          Resumos inteligentes de PDFs com IA
         </p>
       </div>
 
       <div class="upload-area" id="uploadArea" onclick="document.getElementById('pdfFile').click()">
-        <div class="upload-icon">📤</div>
-        <div class="upload-text">Clique ou arraste seu PDF aqui</div>
-        <div class="upload-hint">Máximo 10MB • Formato PDF</div>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 12px; display: block; color: #737373;">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+        </svg>
+        <div class="upload-text">Selecionar arquivo</div>
+        <div class="upload-hint">PDF até 10MB</div>
       </div>
 
       <input
@@ -338,46 +285,43 @@
       />
 
       <div class="file-info" id="fileInfo">
-        <div class="file-icon">📄</div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex-shrink: 0; color: #737373;">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
         <div class="file-details">
           <div class="file-name" id="fileName"></div>
           <div class="file-size" id="fileSize"></div>
         </div>
-        <button class="remove-file" onclick="removeFile()">×</button>
+        <button class="remove-file" onclick="removeFile()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
       </div>
 
       <button id="uploadBtn" onclick="uploadPDF()" disabled>
-        Gerar Resumo com IA
+        Gerar resumo
       </button>
 
       <div class="loading" id="loading">
         <div class="spinner"></div>
-        <div class="loading-text">Analisando seu PDF com IA...</div>
+        <div class="loading-text">Processando...</div>
       </div>
 
       <div class="result" id="result">
         <div class="result-header">
-          <div class="result-title">✨ Resumo Gerado</div>
+          <div class="result-title">Resumo</div>
           <button class="copy-btn" onclick="copyToClipboard()">
-            📋 Copiar
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copiar
           </button>
         </div>
         <div class="result-content" id="resultContent"></div>
-      </div>
-
-      <div class="features">
-        <div class="feature">
-          <div class="feature-icon">⚡</div>
-          <div class="feature-text">Processamento rápido</div>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">🤖</div>
-          <div class="feature-text">IA avançada Llama 3.3</div>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">🔒</div>
-          <div class="feature-text">Seguro e privado</div>
-        </div>
       </div>
     </div>
 
