@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import pdfParse from "pdf-parse";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -14,16 +15,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (buffer.length > MAX_SIZE)
       return res.status(413).json({ error: "File too large" });
 
-    const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.js");
-    const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) })
-      .promise;
-
-    let text = "";
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const content = await page.getTextContent();
-      text += content.items.map((item: any) => item.str).join(" ") + "\n\n";
-    }
+    const pdfData = await pdfParse(buffer);
+    const text = pdfData.text;
 
     if (!text.trim())
       return res.status(400).json({ error: "PDF contains no text" });
