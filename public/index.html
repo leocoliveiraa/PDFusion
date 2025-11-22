@@ -3,93 +3,463 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resumo de PDF</title>
+    <title>PDFusion - Resumo Inteligente de PDFs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        background: #f4f4f4;
-        padding: 40px;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
         display: flex;
+        align-items: center;
         justify-content: center;
+        padding: 20px;
+        color: #333;
       }
 
       .container {
         background: white;
-        padding: 30px;
-        border-radius: 12px;
-        width: 500px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        padding: 48px;
+        border-radius: 24px;
+        max-width: 680px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.5s ease-out;
       }
 
-      h2 {
-        margin-bottom: 20px;
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .header {
         text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .logo {
+        font-size: 42px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 12px;
+      }
+
+      .subtitle {
+        color: #6b7280;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .upload-area {
+        border: 2px dashed #d1d5db;
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: #f9fafb;
+        margin-bottom: 24px;
+      }
+
+      .upload-area:hover {
+        border-color: #667eea;
+        background: #f3f4ff;
+      }
+
+      .upload-area.dragover {
+        border-color: #667eea;
+        background: #eef2ff;
+        transform: scale(1.02);
+      }
+
+      .upload-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .upload-text {
+        font-size: 16px;
+        color: #374151;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .upload-hint {
+        font-size: 14px;
+        color: #9ca3af;
       }
 
       input[type="file"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
+        display: none;
+      }
+
+      .file-info {
+        display: none;
+        background: #f3f4ff;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .file-info.show {
+        display: flex;
+      }
+
+      .file-icon {
+        font-size: 32px;
+      }
+
+      .file-details {
+        flex: 1;
+      }
+
+      .file-name {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 4px;
+      }
+
+      .file-size {
+        font-size: 14px;
+        color: #6b7280;
+      }
+
+      .remove-file {
+        background: none;
+        border: none;
+        color: #ef4444;
+        cursor: pointer;
+        font-size: 24px;
+        padding: 8px;
+        width: auto;
       }
 
       button {
         width: 100%;
-        padding: 12px;
-        background: #4caf50;
+        padding: 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 12px;
         cursor: pointer;
         font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
       }
 
-      button:hover {
-        background: #45a049;
+      button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        margin-top: 24px;
+      }
+
+      .loading.show {
+        display: block;
+      }
+
+      .spinner {
+        border: 3px solid #f3f4f6;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: #6b7280;
+        font-size: 14px;
       }
 
       .result {
-        margin-top: 25px;
+        display: none;
+        margin-top: 32px;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      .result.show {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .result-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1f2937;
+      }
+
+      .copy-btn {
+        background: #f3f4f6;
+        color: #374151;
+        padding: 8px 16px;
+        font-size: 14px;
+        width: auto;
+        box-shadow: none;
+      }
+
+      .copy-btn:hover {
+        background: #e5e7eb;
+      }
+
+      .result-content {
+        background: #f9fafb;
+        padding: 24px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
         white-space: pre-wrap;
-        background: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
+        line-height: 1.8;
+        color: #374151;
+        font-size: 15px;
+      }
+
+      .error {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 32px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .feature {
+        text-align: center;
+      }
+
+      .feature-icon {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      .feature-text {
+        font-size: 13px;
+        color: #6b7280;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 32px 24px;
+        }
+
+        .features {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
       }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <h2>Resumo de PDF</h2>
+      <div class="header">
+        <div class="logo">📄 PDFusion</div>
+        <p class="subtitle">
+          Transforme seus PDFs em resumos inteligentes com IA. Extraia insights,
+          tópicos principais e economize tempo na leitura de documentos.
+        </p>
+      </div>
 
-      <input type="file" id="pdfFile" accept="application/pdf" />
-      <button onclick="uploadPDF()">Enviar PDF</button>
+      <div class="upload-area" id="uploadArea" onclick="document.getElementById('pdfFile').click()">
+        <div class="upload-icon">📤</div>
+        <div class="upload-text">Clique ou arraste seu PDF aqui</div>
+        <div class="upload-hint">Máximo 10MB • Formato PDF</div>
+      </div>
 
-      <div id="result" class="result" style="display: none"></div>
+      <input
+        type="file"
+        id="pdfFile"
+        accept="application/pdf"
+        onchange="handleFileSelect(event)"
+      />
+
+      <div class="file-info" id="fileInfo">
+        <div class="file-icon">📄</div>
+        <div class="file-details">
+          <div class="file-name" id="fileName"></div>
+          <div class="file-size" id="fileSize"></div>
+        </div>
+        <button class="remove-file" onclick="removeFile()">×</button>
+      </div>
+
+      <button id="uploadBtn" onclick="uploadPDF()" disabled>
+        Gerar Resumo com IA
+      </button>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Analisando seu PDF com IA...</div>
+      </div>
+
+      <div class="result" id="result">
+        <div class="result-header">
+          <div class="result-title">✨ Resumo Gerado</div>
+          <button class="copy-btn" onclick="copyToClipboard()">
+            📋 Copiar
+          </button>
+        </div>
+        <div class="result-content" id="resultContent"></div>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-text">Processamento rápido</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🤖</div>
+          <div class="feature-text">IA avançada Llama 3.3</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-text">Seguro e privado</div>
+        </div>
+      </div>
     </div>
 
     <script>
-      async function uploadPDF() {
-        const fileInput = document.getElementById("pdfFile");
-        const resultDiv = document.getElementById("result");
+      let selectedFile = null;
 
-        if (!fileInput.files.length) {
+      // Drag and drop
+      const uploadArea = document.getElementById("uploadArea");
+
+      uploadArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadArea.classList.add("dragover");
+      });
+
+      uploadArea.addEventListener("dragleave", () => {
+        uploadArea.classList.remove("dragover");
+      });
+
+      uploadArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove("dragover");
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          document.getElementById("pdfFile").files = files;
+          handleFileSelect({ target: { files } });
+        }
+      });
+
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (file.type !== "application/pdf") {
+          alert("Por favor, selecione um arquivo PDF válido.");
+          return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+          alert("Arquivo muito grande. O limite é 10MB.");
+          return;
+        }
+
+        selectedFile = file;
+        document.getElementById("fileName").textContent = file.name;
+        document.getElementById("fileSize").textContent = formatFileSize(
+          file.size
+        );
+        document.getElementById("fileInfo").classList.add("show");
+        document.getElementById("uploadBtn").disabled = false;
+        document.getElementById("result").classList.remove("show");
+      }
+
+      function removeFile() {
+        selectedFile = null;
+        document.getElementById("pdfFile").value = "";
+        document.getElementById("fileInfo").classList.remove("show");
+        document.getElementById("uploadBtn").disabled = true;
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+      }
+
+      async function uploadPDF() {
+        if (!selectedFile) {
           alert("Selecione um arquivo PDF!");
           return;
         }
 
-        const file = fileInput.files[0];
-        if (file.size > 10 * 1024 * 1024) {
-          alert("Arquivo muito grande. Limite: 10MB.");
-          return;
-        }
+        const uploadBtn = document.getElementById("uploadBtn");
+        const loading = document.getElementById("loading");
+        const result = document.getElementById("result");
+        const resultContent = document.getElementById("resultContent");
 
-        resultDiv.style.display = "block";
-        resultDiv.innerText = "Processando PDF...";
+        uploadBtn.disabled = true;
+        loading.classList.add("show");
+        result.classList.remove("show");
 
         try {
-          const arrayBuffer = await file.arrayBuffer();
+          const arrayBuffer = await selectedFile.arrayBuffer();
           const uint8 = new Uint8Array(arrayBuffer);
           let binary = "";
           const chunkSize = 0x8000;
@@ -104,20 +474,46 @@
           const res = await fetch("/api/upload", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ filename: file.name, data: base64 }),
+            body: JSON.stringify({
+              filename: selectedFile.name,
+              data: base64,
+            }),
           });
 
           const data = await res.json();
 
+          loading.classList.remove("show");
+          result.classList.add("show");
+
           if (res.ok && data.summary) {
-            resultDiv.innerText = data.summary;
+            resultContent.textContent = data.summary;
+            resultContent.classList.remove("error");
           } else {
-            resultDiv.innerText =
-              "Erro: " + (data.error || JSON.stringify(data));
+            resultContent.textContent =
+              "❌ Erro: " + (data.error || JSON.stringify(data));
+            resultContent.classList.add("error");
           }
         } catch (err) {
-          resultDiv.innerText = "Erro ao enviar: " + (err.message || err);
+          loading.classList.remove("show");
+          result.classList.add("show");
+          resultContent.textContent =
+            "❌ Erro ao processar: " + (err.message || err);
+          resultContent.classList.add("error");
+        } finally {
+          uploadBtn.disabled = false;
         }
+      }
+
+      function copyToClipboard() {
+        const content = document.getElementById("resultContent").textContent;
+        navigator.clipboard.writeText(content).then(() => {
+          const btn = document.querySelector(".copy-btn");
+          const originalText = btn.textContent;
+          btn.textContent = "✓ Copiado!";
+          setTimeout(() => {
+            btn.textContent = originalText;
+          }, 2000);
+        });
       }
     </script>
   </body>
