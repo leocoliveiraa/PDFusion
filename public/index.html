@@ -434,14 +434,14 @@
             resultContent.classList.remove("error");
           } else {
             resultContent.textContent =
-              "❌ Erro: " + (data.error || JSON.stringify(data));
+              "Erro: " + (data.error || JSON.stringify(data));
             resultContent.classList.add("error");
           }
         } catch (err) {
           loading.classList.remove("show");
           result.classList.add("show");
           resultContent.textContent =
-            "❌ Erro ao processar: " + (err.message || err);
+            "Erro ao processar: " + (err.message || err);
           resultContent.classList.add("error");
         } finally {
           uploadBtn.disabled = false;
@@ -452,10 +452,10 @@
         const content = document.getElementById("resultContent").textContent;
         navigator.clipboard.writeText(content).then(() => {
           const btn = document.querySelector(".copy-btn");
-          const originalText = btn.textContent;
-          btn.textContent = "✓ Copiado!";
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 6px;"><polyline points="20 6 9 17 4 12"/></svg>Copiado';
           setTimeout(() => {
-            btn.textContent = originalText;
+            btn.innerHTML = originalHTML;
           }, 2000);
         });
       }
